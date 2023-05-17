@@ -15,7 +15,7 @@ def ordinal_encoder(input_val, feats):
     return value
 
 
-def get_prediction(data,model):
+def get_prediction(data, model):
     """
     Predict the class of a given data point.
     """
