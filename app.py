@@ -60,9 +60,9 @@ vehicle_movement = ['Going straight', 'U-Turn', 'Moving Backward', 'Turnover', '
 casualty_class = ['Driver or rider', 'Pedestrian', 'Passenger'] 
 sex_of_casualty = ['Male', 'Female'] 
 age_band_of_casualty = ['31-50', '18-30', 'Under 18', 'Over 51', '5'] 
-casualty_severity = ['3', '2', '1'] 
+#casualty_severity = ['3', '2', '1'] 
 #work_of_casuality = ['Driver', 'Other', 'Unemployed', 'Employee', 'Self-employed', 'Student', 'Unknown'] 
-fitness_of_casuality = ['Normal', 'Deaf', 'Other', 'Blind', 'NormalNormal'] 
+##fitness_of_casuality = ['Normal', 'Deaf', 'Other', 'Blind', 'NormalNormal'] 
 pedestrian_movement = ['Not a Pedestrian', "Crossing from driver's nearside",
                        'Crossing from nearside - masked by parked or statioNot a Pedestrianry vehicle',
                        'Unknown or other',
@@ -76,6 +76,8 @@ cause_of_accident = ['Moving Backward', 'Overtaking', 'Changing lane to the left
                      'No distancing', 'Getting off the vehicle improperly', 'Improper parking', 'Overspeed',
                      'Driving carelessly', 'Driving at high speed', 'Driving to the left', 'Unknown',
                      'Overturning', 'Turnover', 'Driving under the influence of drugs' 'Drunk driving'] 
+#Hour = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+#Minute= ['0', '1', '2']
 Accident_severity = ['Slight Injury' 'Serious Injury' 'Fatal injury'] 
 
 features = ['Day_of_week', 'Age_band_of_driver', 'Sex_of_driver', 'Educational_level',
@@ -85,16 +87,17 @@ features = ['Day_of_week', 'Age_band_of_driver', 'Sex_of_driver', 'Educational_l
             'Road_surface_conditions', 'Light_conditions', 'Weather_conditions', 'Type_of_collision',
             'Number_of_vehicles_involved', 'Number_of_casualties', 'Vehicle_movement', 'Casualty_class',
             'Sex_of_casualty', 'Age_band_of_casualty', 'Casualty_severity', 
-            'Pedestrian_movement', 'Cause_of_accident', 'Accident_severity']
+            'Pedestrian_movement', 'Cause_of_accident', 'Hour', 'Minute']
 
 def main():
-#def user_report():
+    #st.form('Prediction_form'):
     st.title("Accident Severity Predictor 🚦 🚧 ")
-    st.image(r"Dataset/RTA_image.jpg", width = 650)
-    #with st.form('Prediction_form'):
+    st.image(r"Dataset/RTA_image.jpg", width = 670)
     st.subheader('Enter the input for the following features: ')
     #Time = st.slider("Pickup Hour: ", 0, 23, value=0, format="%d")
-    Time = st.time_input('Incident Time:', datetime.time(00, 00))
+    #Time = st.time_input('Incident Time:', datetime.time(00, 00))
+    Hour = st.slider("Pickup Hour: ", 0, 23, value=0, format="%d")
+    Minute = st.slider("Pickup Minute: ", 0, 59, value=0, format="%d")
     Day_of_week = st.selectbox("Select Day of the Week: ", options = day_of_week)
     Age_band_of_driver = st.selectbox("Select Driver Age: ", options = age_band_of_driver)
     Sex_of_driver = st.radio('Gender of Driver:', options = sex_of_driver)
@@ -114,36 +117,32 @@ def main():
     Light_conditions = st.radio('Light conditions:', options = light_conditions)
     Weather_conditions = st.selectbox("Weather conditions:", options = weather_conditions)
     Type_of_collision = st.selectbox("Collision type:", options = type_of_collision)
-    #Number_of_vehicles_involved = st.slider("Vehicle involvement: ", 1, 7, value=0, format="%d")
-    Number_of_vehicles_involved = st.select_slider("Vehicle involvement: ", options = number_of_vehicles_involved)
-    Number_of_casualties = st.select_slider("Casualties count: ", options = number_of_casualties)
+    Number_of_vehicles_involved = st.slider("Vehicle involvement: ", 1, 7, value=1, format="%d")
+    #Number_of_vehicles_involved = st.select_slider("Vehicle involvement: ", options = number_of_vehicles_involved)
+    Number_of_casualties = st.slider("Casualties count: ", 1, 8, value=1, format="%d")
+    #Number_of_casualties = st.select_slider("Casualties count: ", options = number_of_casualties)
     Vehicle_movement = st.selectbox("Vehicle movement:", options = vehicle_movement)
     Casualty_class = st.radio('Casualty class:', options = casualty_class)
     Sex_of_casualty = st.radio('Casualty gender:', options = sex_of_casualty)
     Age_band_of_casualty = st.selectbox("Casualty age band:", options = age_band_of_casualty)
-    Casualty_severity = st.radio('Casualty severity:', options = casualty_severity)
-    #Work_of_casuality = st.selectbox("Work of casuality:", options = work_of_casuality)
-    #Fitness_of_casuality = st.selectbox("Fitness of casuality:", options = fitness_of_casuality)
     Pedestrian_movement = st.selectbox("Pedestrian movement:", options = pedestrian_movement)
     Cause_of_accident = st.selectbox("Cause of accident:", options = cause_of_accident)
-        
+            
     agreed = st.checkbox('I agree to the terms and conditions for obtaining the predictions.')
-        
+
+           
     if agreed:
         submit = st.button("Predict")
-
 
         if submit:
             Day_of_week = ordinal_encoder(Day_of_week, day_of_week)
             Age_band_of_driver = ordinal_encoder(Age_band_of_driver, age_band_of_driver)
             Sex_of_driver = ordinal_encoder(Sex_of_driver, sex_of_driver)
             Educational_level = ordinal_encoder(Educational_level, educational_level)
-            #Vehicle_driver_relation = ordinal_encoder(Vehicle_driver_relation, vehicle_driver_relation)
             Driving_experience = ordinal_encoder(Driving_experience, driving_experience)
             Type_of_vehicle = ordinal_encoder(Type_of_vehicle, type_of_vehicle)
             Owner_of_vehicle = ordinal_encoder(Owner_of_vehicle, owner_of_vehicle)
             Service_year_of_vehicle = ordinal_encoder(Service_year_of_vehicle, service_year_of_vehicle)
-            #Defect_of_vehicle = ordinal_encoder(Defect_of_vehicle, defect_of_vehicle)
             Area_accident_occured = ordinal_encoder(Area_accident_occured, area_accident_occured)
             Lanes_or_Medians = ordinal_encoder(Lanes_or_Medians, lanes_or_Medians)
             Road_allignment = ordinal_encoder(Road_allignment, road_allignment)
@@ -153,49 +152,31 @@ def main():
             Light_conditions = ordinal_encoder(Light_conditions, light_conditions)
             Weather_conditions = ordinal_encoder(Weather_conditions, weather_conditions)
             Type_of_collision = ordinal_encoder(Type_of_collision, type_of_collision)
-            Number_of_vehicles_involved = ordinal_encoder(Number_of_vehicles_involved, number_of_vehicles_involved)
-            Number_of_casualties = ordinal_encoder(Number_of_casualties, number_of_casualties)
             Vehicle_movement = ordinal_encoder(Vehicle_movement, vehicle_movement)
             Casualty_class = ordinal_encoder(Casualty_class, casualty_class)
             Sex_of_casualty = ordinal_encoder(Sex_of_casualty, sex_of_casualty)
             Age_band_of_casualty = ordinal_encoder(Age_band_of_casualty, age_band_of_casualty)
-            Casualty_severity = ordinal_encoder(Casualty_severity, casualty_severity)
-            #Work_of_casuality = ordinal_encoder(Work_of_casuality, work_of_casuality)
-            #Fitness_of_casuality = ordinal_encoder(Fitness_of_casuality, fitness_of_casuality)
             Pedestrian_movement = ordinal_encoder(Pedestrian_movement, pedestrian_movement)
             Cause_of_accident = ordinal_encoder(Cause_of_accident, cause_of_accident)
-                
+                    
             data = np.array([day_of_week, age_band_of_driver, sex_of_driver, educational_level,
-            driving_experience, type_of_vehicle, owner_of_vehicle,
-            service_year_of_vehicle,  area_accident_occured, lanes_or_Medians,
-            road_allignment, types_of_Junction, road_surface_type, road_surface_conditions,
-            light_conditions, weather_conditions, type_of_collision, number_of_vehicles_involved,
-            number_of_casualties, vehicle_movement, casualty_class, sex_of_casualty,
-            age_band_of_casualty, casualty_severity,
-            pedestrian_movement, cause_of_accident]).reshape(1,-1)
-
-            #data = np.array(['day_of_week', 'age_band_of_driver', 'sex_of_driver', 'educational_level',
-            #'vehicle_driver_relation', 'driving_experience', 'type_of_vehicle', 'owner_of_vehicle',
-            #'service_year_of_vehicle', 'defect_of_vehicle', 'area_accident_occured', 'lanes_or_Medians',
-            #'road_allignment', 'types_of_Junction', 'road_surface_type', 'road_surface_conditions',
-            #'light_conditions', 'weather_conditions', 'type_of_collision', 'number_of_vehicles_involved',
-            #'number_of_casualties', 'vehicle_movement', 'casualty_class', 'sex_of_casualty',
-            #'age_band_of_casualty', 'casualty_severity', 'work_of_casuality', 'fitness_of_casuality',
-            #'pedestrian_movement', 'cause_of_accident']).reshape(1,-1)
-        
-        
-            model = joblib.load(r'Model/ExtraTreesClassifier_model.joblib')
+                             driving_experience, type_of_vehicle, owner_of_vehicle,
+                             service_year_of_vehicle,  area_accident_occured, lanes_or_Medians,
+                             road_allignment, types_of_Junction, road_surface_type,
+                             road_surface_conditions, light_conditions, weather_conditions,
+                             type_of_collision, number_of_vehicles_involved, number_of_casualties,
+                             vehicle_movement, casualty_class, sex_of_casualty,
+                             age_band_of_casualty, pedestrian_movement, cause_of_accident,
+                             Hour, Minute]).reshape(1,-1)
+                
+            model = joblib.load(r'Model/ETClassifier_model.joblib')
 
             pred = get_prediction(data=data, model=model)
-        
+            
             st.write(f"The predicted severity is:  {pred[0]}")
-            #st.write('Prediction enabled!')
+
     else:
         st.warning("Prediction disabled. You must agree to the terms and conditions to use this app.")
-        #st.write('Prediction disabled.')
     
-        #submit = st.form_submit_button("Predict")      
 if __name__ == "__main__":
     main()
-
-
