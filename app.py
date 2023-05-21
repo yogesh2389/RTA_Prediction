@@ -52,8 +52,8 @@ weather_conditions = ['Normal', 'Raining', 'Raining and Windy', 'Cloudy', 'Other
 type_of_collision = ['Collision with roadside-parked vehicles', 'Vehicle with vehicle collision',
                      'Collision with roadside objects', 'Collision with animals', 'Other', 'Rollover',
                      'Fall from vehicles', 'Collision with pedestrians', 'With Train', 'Unknown'] 
-number_of_vehicles_involved = [1, 2, 3, 4, 6, 7] 
-number_of_casualties = [1, 2, 3, 4, 5, 6, 7, 8] 
+#number_of_vehicles_involved = [1, 2, 3, 4, 6, 7] 
+#number_of_casualties = [1, 2, 3, 4, 5, 6, 7, 8] 
 vehicle_movement = ['Going straight', 'U-Turn', 'Moving Backward', 'Turnover', 'Waiting to go',
                     'Getting off', 'Reversing', 'Unknown', 'Parked', 'Stopping', 'Overtaking', 'Other',
                     'Entering a junction'] 
@@ -76,25 +76,23 @@ cause_of_accident = ['Moving Backward', 'Overtaking', 'Changing lane to the left
                      'No distancing', 'Getting off the vehicle improperly', 'Improper parking', 'Overspeed',
                      'Driving carelessly', 'Driving at high speed', 'Driving to the left', 'Unknown',
                      'Overturning', 'Turnover', 'Driving under the influence of drugs' 'Drunk driving'] 
-#Hour = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-#Minute= ['0', '1', '2']
-Accident_severity = ['Slight Injury' 'Serious Injury' 'Fatal injury'] 
 
-features = ['Day_of_week', 'Age_band_of_driver', 'Sex_of_driver', 'Educational_level',
+#Accident_severity = ['Slight Injury' 'Serious Injury' 'Fatal injury'] 
+
+features = ['Hour', 'Minute', 'Day_of_week', 'Age_band_of_driver', 'Sex_of_driver', 'Educational_level',
             'Driving_experience', 'Type_of_vehicle', 'Owner_of_vehicle',
             'Service_year_of_vehicle', 'Area_accident_occured', 
             'Lanes_or_Medians', 'Road_allignment', 'Types_of_Junction', 'Road_surface_type',
             'Road_surface_conditions', 'Light_conditions', 'Weather_conditions', 'Type_of_collision',
             'Number_of_vehicles_involved', 'Number_of_casualties', 'Vehicle_movement', 'Casualty_class',
             'Sex_of_casualty', 'Age_band_of_casualty', 'Casualty_severity', 
-            'Pedestrian_movement', 'Cause_of_accident', 'Hour', 'Minute']
+            'Pedestrian_movement', 'Cause_of_accident']
 
 def main():
     #st.form('Prediction_form'):
     st.title("Accident Severity Predictor 🚦 🚧 ")
     st.image(r"Dataset/RTA_image.jpg", width = 670)
     st.subheader('Enter the input for the following features: ')
-    #Time = st.slider("Pickup Hour: ", 0, 23, value=0, format="%d")
     #Time = st.time_input('Incident Time:', datetime.time(00, 00))
     Hour = st.slider("Pickup Hour: ", 0, 23, value=0, format="%d")
     Minute = st.slider("Pickup Minute: ", 0, 59, value=0, format="%d")
@@ -129,7 +127,6 @@ def main():
     Cause_of_accident = st.selectbox("Cause of accident:", options = cause_of_accident)
             
     agreed = st.checkbox('I agree to the terms and conditions for obtaining the predictions.')
-
            
     if agreed:
         submit = st.button("Predict")
@@ -159,16 +156,15 @@ def main():
             Pedestrian_movement = ordinal_encoder(Pedestrian_movement, pedestrian_movement)
             Cause_of_accident = ordinal_encoder(Cause_of_accident, cause_of_accident)
                     
-            data = np.array([day_of_week, age_band_of_driver, sex_of_driver, educational_level,
-                             driving_experience, type_of_vehicle, owner_of_vehicle,
-                             service_year_of_vehicle,  area_accident_occured, lanes_or_Medians,
+            data = np.array([Hour, Minute, Day_of_week, Age_band_of_driver, Sex_of_driver,
+                             Educational_level, Driving_experience, Type_of_vehicle, Owner_of_vehicle,
+                             Service_year_of_vehicle,  Area_accident_occured, Lanes_or_Medians,
                              road_allignment, types_of_Junction, road_surface_type,
-                             road_surface_conditions, light_conditions, weather_conditions,
-                             type_of_collision, number_of_vehicles_involved, number_of_casualties,
-                             vehicle_movement, casualty_class, sex_of_casualty,
-                             age_band_of_casualty, pedestrian_movement, cause_of_accident,
-                             Hour, Minute]).reshape(1,-1)
-                
+                             Road_surface_conditions, Light_conditions, Weather_conditions,
+                             Type_of_collision, Number_of_vehicles_involved, Number_of_casualties,
+                             Vehicle_movement, Casualty_class, Sex_of_casualty,
+                             Age_band_of_casualty, Pedestrian_movement, Cause_of_accident]).reshape(1,-1)
+            
             model = joblib.load(r'Model/ETClassifier_model.joblib')
 
             pred = get_prediction(data=data, model=model)
