@@ -91,7 +91,7 @@ features = ['Hour', 'Minute', 'Day_of_week', 'Age_band_of_driver', 'Sex_of_drive
 def main():
     #st.form('Prediction_form'):
     st.title("Accident Severity Predictor 🚦 🚧 ")
-    st.image(r"Dataset/RTA_image.jpg", width = 670)
+    st.image(r"C:\Users\Yogesh\Downloads\TMLC\Machine Learning\RTA_Prediction\Dataset/RTA_image.jpg", width = 670)
     st.subheader('Enter the input for the following features: ')
     #Time = st.time_input('Incident Time:', datetime.time(00, 00))
     Hour = st.slider("Pickup Hour: ", 0, 23, value=0, format="%d")
