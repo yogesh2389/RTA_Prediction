@@ -159,12 +159,13 @@ def main():
             data = np.array([Hour, Minute, Day_of_week, Age_band_of_driver, Sex_of_driver,
                              Educational_level, Driving_experience, Type_of_vehicle, Owner_of_vehicle,
                              Service_year_of_vehicle,  Area_accident_occured, Lanes_or_Medians,
-                             road_allignment, types_of_Junction, road_surface_type,
+                             Road_allignment, Types_of_Junction, Road_surface_type,
                              Road_surface_conditions, Light_conditions, Weather_conditions,
                              Type_of_collision, Number_of_vehicles_involved, Number_of_casualties,
                              Vehicle_movement, Casualty_class, Sex_of_casualty,
                              Age_band_of_casualty, Pedestrian_movement, Cause_of_accident]).reshape(1,-1)
             
+            #st.write(data)
             model = joblib.load(r'Model/ETClassifier_model.joblib')
 
             pred = get_prediction(data=data, model=model)
